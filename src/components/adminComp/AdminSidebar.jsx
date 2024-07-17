@@ -2,6 +2,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import "/home/beehyv/Projects/Django/frontend/src/index.css"
 
 const AdminSidebar = () => {
+
   const navigate = useNavigate();
 
   const handleSignOut = () => {
@@ -16,7 +17,7 @@ const AdminSidebar = () => {
           alt="Admin" 
           className="mt-9 w-24 h-24 rounded-full mb-4 border-2 border-white"
         />
-        <span className="text-sm">beehyv@mail.com</span>
+        <span className="text-sm">BeehyvAdmin</span>
       </div>
       
       <nav className="flex-grow">

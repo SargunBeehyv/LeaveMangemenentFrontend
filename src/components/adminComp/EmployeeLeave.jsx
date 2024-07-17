@@ -6,23 +6,10 @@ const formatCreatedAt = (createdAt) => {
   const date = new Date(createdAt);
   return date.toLocaleString(); // Adjust locale and options as needed
 };
-
-const ApprovalButtons = ({ onApprove, onReject }) => (
-  <div className="flex flex-col space-y-2">
-    <button 
-      onClick={onApprove}
-      className="bg-green-500 hover:bg-green-600 text-white font-bold py-1 px-2 rounded text-xs"
-    >
-      Approve
-    </button>
-    <button 
-      onClick={onReject}
-      className="bg-red-500 hover:bg-red-600 text-white font-bold py-1 px-2 rounded text-xs"
-    >
-      Not Approve
-    </button>
-  </div>
-);
+const formatDate = (dateString) => {
+  const options = { year: 'numeric', month: 'long', day: 'numeric' };
+  return new Date(dateString).toLocaleDateString(undefined, options);
+};
 
 const EmployeeLeave = () => {
   const [leaveRequests, setLeaveRequests] = useState([]);
@@ -64,7 +51,7 @@ const EmployeeLeave = () => {
         },
         withCredentials: true,
       });
-      // Update leaveRequests state by filtering out the approved leave
+      // Update leaveRequests state
       setLeaveRequests(leaveRequests.map(request =>
         request.id === id ? { ...request, status: 1 } : request
       ));
@@ -72,10 +59,9 @@ const EmployeeLeave = () => {
       console.error('Error approving leave request:', error);
     }
   };
-
+  
   const handleReject = async (id) => {
     try {
-
       const token = localStorage.getItem('token');
       if (!token) {
         console.error('No token found');
@@ -88,7 +74,7 @@ const EmployeeLeave = () => {
         },
         withCredentials: true,
       });
-      // Update leaveRequests state by filtering out the disapproved leave
+      // Update leaveRequests state
       setLeaveRequests(leaveRequests.map(request =>
         request.id === id ? { ...request, status: 2 } : request
       ));
@@ -96,7 +82,6 @@ const EmployeeLeave = () => {
       console.error('Error rejecting leave request:', error);
     }
   };
-
   return (
     <div className="container mx-auto py-8">
       <h2 className="text-2xl font-bold mb-6 text-gray-800">Employee Leave Requests</h2>
@@ -110,34 +95,42 @@ const EmployeeLeave = () => {
               <th className="bg-gray-100 sticky top-0 border-b border-gray-200 px-6 py-3 text-gray-600 font-bold tracking-wider uppercase text-xs">End Date</th>
               <th className="bg-gray-100 sticky top-0 border-b border-gray-200 px-6 py-3 text-gray-600 font-bold tracking-wider uppercase text-xs w-1/4">Reason</th>
               <th className="bg-gray-100 sticky top-0 border-b border-gray-200 px-6 py-3 text-gray-600 font-bold tracking-wider uppercase text-xs">Apply Date</th>
-              <th className="bg-gray-100 sticky top-0 border-b border-gray-200 px-6 py-3 text-gray-600 font-bold tracking-wider uppercase text-xs">Approval</th>
+              <th className="bg-gray-100 sticky top-0 border-b border-gray-200 px-6 py-3 text-gray-600 font-bold tracking-wider uppercase text-xs">Actions</th>
             </tr>
           </thead>
           <tbody>
-            {leaveRequests.map((request, index) => (
-              <tr key={request.id} className={index % 2 === 0 ? 'bg-gray-50' : 'bg-white'}>
-                <td className="border-dashed border-t border-gray-200 px-6 py-4">{request.staff_id.admin.username}</td>
+            {leaveRequests.map(request => (
+              <tr key={request.id} className="bg-gray-50">
+                <td className="border-dashed border-t border-gray-200 px-6 py-4">{request.staff_id}</td>
                 <td className="border-dashed border-t border-gray-200 px-6 py-4">{request.leave_type}</td>
-                <td className="border-dashed border-t border-gray-200 px-6 py-4">{request.from_date}</td>
-                <td className="border-dashed border-t border-gray-200 px-6 py-4">{request.to_date}</td>
+                <td className="border-dashed border-t border-gray-200 px-6 py-4">{formatDate(request.from_date)}</td>
+                <td className="border-dashed border-t border-gray-200 px-6 py-4">{formatDate(request.to_date)}</td>
                 <td className="border-dashed border-t border-gray-200 px-6 py-4">{request.message}</td>
                 <td className="border-dashed border-t border-gray-200 px-6 py-4">{formatCreatedAt(request.created_at)}</td>
                 <td className="border-dashed border-t border-gray-200 px-6 py-4">
-                  {request.status === 0 ? (
-                    <ApprovalButtons 
-                      onApprove={() => handleApprove(request.id)}
-                      onReject={() => handleReject(request.id)}
-                    />
+                  {request.status === 1 ? (
+                    <span className="bg-green-500 text-white font-bold py-1 px-2 rounded text-xs mr-2">
+                      Approved
+                    </span>
+                  ) : request.status === 2 ? (
+                    <span className="bg-red-500 text-white font-bold py-1 px-2 rounded text-xs mr-2">
+                      Disapproved
+                    </span>
                   ) : (
-                    request.status === 1 ? (
-                      <span className="bg-green-100 text-green-800 px-2 inline-flex text-xs leading-5 font-semibold rounded-full">
-                        Approved
-                      </span>
-                    ) : (
-                      <span className="bg-red-100 text-red-800 px-2 inline-flex text-xs leading-5 font-semibold rounded-full">
-                        Not Approved
-                      </span>
-                    )
+                    <>
+                      <button
+                        onClick={() => handleApprove(request.id)}
+                        className="bg-green-500 hover:bg-green-600 text-white font-bold py-1 px-2 rounded text-xs mr-2"
+                      >
+                        Approve
+                      </button>
+                      <button
+                        onClick={() => handleReject(request.id)}
+                        className="bg-red-500 hover:bg-red-600 text-white font-bold py-1 px-2 rounded text-xs"
+                      >
+                        Not Approve
+                      </button>
+                    </>
                   )}
                 </td>
               </tr>
