@@ -2,6 +2,13 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { FaEdit, FaTrash } from 'react-icons/fa';
 
+
+const formatDate = (dateString) => {
+  const options = { year: 'numeric', month: 'long', day: 'numeric' };
+  return new Date(dateString).toLocaleDateString(undefined, options);
+};
+
+
 const ManageEmployee = () => {
   const [employees, setEmployees] = useState([]);
 
@@ -64,7 +71,7 @@ const ManageEmployee = () => {
                 <td className="border-dashed border-t border-gray-200 px-6 py-4">{employee.username}</td>
                 <td className="border-dashed border-t border-gray-200 px-6 py-4">{employee.email}</td>
                 <td className="border-dashed border-t border-gray-200 px-6 py-4">{employee.gender}</td>
-                <td className="border-dashed border-t border-gray-200 px-6 py-4">{employee.joiningDate}</td>
+                <td className="border-dashed border-t border-gray-200 px-6 py-4">{formatDate(employee.joiningDate)}</td>
                 <td className="border-dashed border-t border-gray-200 px-6 py-4">
                   <div className="flex items-center space-x-2">
                    

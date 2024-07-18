@@ -101,7 +101,7 @@ const EmployeeLeave = () => {
           <tbody>
             {leaveRequests.map(request => (
               <tr key={request.id} className="bg-gray-50">
-                <td className="border-dashed border-t border-gray-200 px-6 py-4">{request.staff_id}</td>
+                <td className="border-dashed border-t border-gray-200 px-6 py-4 font-bold">{request.staff_first_name}</td>
                 <td className="border-dashed border-t border-gray-200 px-6 py-4">{request.leave_type}</td>
                 <td className="border-dashed border-t border-gray-200 px-6 py-4">{formatDate(request.from_date)}</td>
                 <td className="border-dashed border-t border-gray-200 px-6 py-4">{formatDate(request.to_date)}</td>

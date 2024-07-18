@@ -1,6 +1,19 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import '/home/beehyv/Projects/Django/frontend/src/index.css';
+
+const FormattedMessage = ({ message }) => {
+  return (
+    <div className="whitespace-pre-wrap break-words max-w-xs">
+      {message.split('\n').map((line, index) => (
+        <React.Fragment key={index}>
+          {line}
+          {index !== message.split('\n').length - 1 && <br />}
+        </React.Fragment>
+      ))}
+    </div>
+  );
+};
 
 const LeaveHistory = () => {
   const [leaveHistory, setLeaveHistory] = useState([]);
@@ -18,7 +31,6 @@ const LeaveHistory = () => {
             'Authorization': `Token ${token}`,
           },
         });
-        // Map through the data and format dates and capitalize leave type
         const formattedData = response.data.map(leave => ({
           ...leave,
           leave_type: capitalizeFirstLetter(leave.leave_type),
@@ -40,14 +52,8 @@ const LeaveHistory = () => {
   const formatDate = (dateString) => {
     if (!dateString) return '';
     const date = new Date(dateString);
-    const formattedDate = date.toLocaleDateString(); // Format as "MM/DD/YYYY" or "DD/MM/YYYY" depending on locale
+    const formattedDate = date.toLocaleDateString();
     return formattedDate;
-  };
-
-  const insertLineBreaks = (message) => {
-    if (!message) return '';
-    const regex = /.{1,25}/g; // Adjusted to insert line breaks after every 25 characters
-    return message.match(regex).join('\n');
   };
 
   const getStatusText = (status) => {
@@ -84,7 +90,7 @@ const LeaveHistory = () => {
                 <td className="py-3 px-4">{leave.to_date}</td>
                 <td className="py-3 px-4">{leave.leave_type}</td>
                 <td className="py-3 px-4">
-                  <pre className="not-italic font-semibold">{insertLineBreaks(leave.message)}</pre>
+                  <FormattedMessage message={leave.message} />
                 </td>
                 <td className="py-3 px-4">
                   <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
