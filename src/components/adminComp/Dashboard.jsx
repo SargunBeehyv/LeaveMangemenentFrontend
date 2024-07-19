@@ -42,12 +42,12 @@ const Dashboard = () => {
         <DashboardBox 
           title="Total Employees" 
           count={totalEmployees} 
-          bgColor="bg-blue-200"
+          bgColor="bg-blue-300"
         />
         <DashboardBox 
           title="Total  Leaves" 
           count={employeesOnLeave} 
-          bgColor="bg-green-200"
+          bgColor="bg-green-300"
         />
       </div>
     </div>

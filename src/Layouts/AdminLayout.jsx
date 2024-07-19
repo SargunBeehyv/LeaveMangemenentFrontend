@@ -8,10 +8,6 @@ import ManageEmployee from '../components/adminComp/ManageEmployee';
 import EmployeeLeave from '../components/adminComp/EmployeeLeave';
 
 const AdminLayout = () => {
-  const [totalEmployees, setTotalEmployees] = useState(100);
-  const [employeesOnLeave, setEmployeesOnLeave] = useState(5);
-  const [employees, setEmployees] = useState([]);
-  const [leaveRequests, setLeaveRequests] = useState([]);
   const navigate = useNavigate();
 
   const handleSignOut = () => {
@@ -25,11 +21,11 @@ const AdminLayout = () => {
         <AdminSidebar />
         <main className="flex-1 overflow-y-auto p-4 mx-auto">
           <Routes>
-            <Route path="dashboard" element={<Dashboard totalEmployees={totalEmployees} employeesOnLeave={employeesOnLeave} />} />
+            <Route path="dashboard" element={<Dashboard  />} />
             <Route path="add-employee" element={<AddEmployeeComponent />} />
-            <Route path="manage-employee" element={<ManageEmployee employees={employees} />} />
-            <Route path="employee-leave" element={<EmployeeLeave leaveRequests={leaveRequests} />} />
-            <Route path="*" element={<Navigate to="dashboard" replace />} />
+            <Route path="manage-employee" element={<ManageEmployee  />} />
+            <Route path="employee-leave" element={<EmployeeLeave  />} />
+            <Route path="*"  />
           </Routes>
         </main>
       </div>
