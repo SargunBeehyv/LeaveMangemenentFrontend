@@ -4,7 +4,7 @@ import csrftoken from '/home/beehyv/Projects/Django/frontend/src/csrf.js';
 
 const formatCreatedAt = (createdAt) => {
   const date = new Date(createdAt);
-  return date.toLocaleString(); // Adjust locale and options as needed
+  return date.toLocaleString(); 
 };
 const formatDate = (dateString) => {
   const options = { year: 'numeric', month: 'long', day: 'numeric' };
@@ -51,7 +51,6 @@ const EmployeeLeave = () => {
         },
         withCredentials: true,
       });
-      // Update leaveRequests state
       setLeaveRequests(leaveRequests.map(request =>
         request.id === id ? { ...request, status: 1 } : request
       ));
@@ -74,7 +73,6 @@ const EmployeeLeave = () => {
         },
         withCredentials: true,
       });
-      // Update leaveRequests state
       setLeaveRequests(leaveRequests.map(request =>
         request.id === id ? { ...request, status: 2 } : request
       ));

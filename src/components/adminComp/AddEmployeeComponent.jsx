@@ -52,10 +52,9 @@ const AddEmployeeComponent = () => {
 
             console.log(response.data);
             navigate('/admin/dashboard')
-            // Optionally reset form fields or show success message
         } catch (error) {
             console.error('There was an error adding the staff!', error);
-            // Handle error state or show error message
+
         }
     };
 

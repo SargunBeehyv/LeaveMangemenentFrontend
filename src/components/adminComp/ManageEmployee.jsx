@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-import { FaEdit, FaTrash } from 'react-icons/fa';
+import { FaTrash } from 'react-icons/fa';
 
 
 const formatDate = (dateString) => {
