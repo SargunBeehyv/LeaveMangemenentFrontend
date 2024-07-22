@@ -26,9 +26,7 @@ const LoginPage = () => {
                 password
             });
             if (response.data.status === 'success') {
-                // Store token in localStorage or state
                 localStorage.setItem('token', response.data.token);
-                // Redirect based on the response
                 window.location.href = response.data.redirect_url;
             } else {
                 setError(response.data.message);

@@ -12,7 +12,6 @@ const AdminSidebar = ({ onSignOut }) => {
         return;
       }
 
-      // Call the logout API
       const response = await fetch('http://127.0.0.1:8000/api/logout/', {
         method: 'POST',
         headers: {

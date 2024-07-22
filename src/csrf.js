@@ -1,4 +1,4 @@
-// src/csrf.js
+
 
 function getCookie(name) {
     let cookieValue = null;

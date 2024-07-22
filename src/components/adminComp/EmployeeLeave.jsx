@@ -28,7 +28,6 @@ const EmployeeLeave = () => {
           },
           withCredentials: true,
         });
-        // The response is already sorted by the server, so we can use it directly
         setLeaveRequests(response.data);
       } catch (error) {
         console.error('Error fetching leave requests:', error);
