@@ -13,7 +13,7 @@ const LoginPage = () => {
             setBgColor((prevColor) => 
                 prevColor === 'bg-blue-500' ? 'bg-green-500' : 'bg-blue-500'
             );
-        }, 3500);
+        }, 2000);
 
         return () => clearInterval(intervalId);
     }, []);
