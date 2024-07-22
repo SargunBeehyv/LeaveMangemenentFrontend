@@ -1,12 +1,37 @@
 import { Link, useNavigate } from 'react-router-dom';
 import "/home/beehyv/Projects/Django/frontend/src/index.css"
 
-const AdminSidebar = () => {
-
+const AdminSidebar = ({ onSignOut }) => {
   const navigate = useNavigate();
 
-  const handleSignOut = () => {
-    navigate('/login');
+  const handleSignOut = async () => {
+    try {
+      const token = localStorage.getItem('token');
+      if (!token) {
+        console.error('No token found');
+        return;
+      }
+
+      // Call the logout API
+      const response = await fetch('http://127.0.0.1:8000/api/logout/', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Token ${token}`,
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error('Logout failed');
+      }
+
+      // Remove the token from localStorage
+      localStorage.removeItem('token');
+
+      // Navigate to login page and replace the current entry in the history stack
+      navigate('/login', { replace: true });
+    } catch (error) {
+      console.error('Error during sign out:', error);
+    }
   };
 
   return (

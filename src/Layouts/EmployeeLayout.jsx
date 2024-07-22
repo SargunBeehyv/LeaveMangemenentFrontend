@@ -1,5 +1,6 @@
 // EmployeeLayout.js
 import  { useEffect, useState } from 'react';
+import axios from 'axios';
 import { Routes, Route, Navigate, useNavigate, Link } from 'react-router-dom';
 import Header from '../components/commonComp/Header';
 import Dashboard from '../components/employeeComp/Dashboard';
@@ -15,27 +16,50 @@ const EmployeeLayout = () => {
       try {
         const token = localStorage.getItem('token');
         if (!token) {
-            console.error('No token found');
-            return;
+          console.error('No token found');
+          navigate('/login', { replace: true });
+          return;
         }
-        const response = await fetch('http://127.0.0.1:8000/api/user/profile/',{
+        const response = await fetch('http://127.0.0.1:8000/api/user/profile/', {
           headers: {
             'Authorization': `Token ${token}`,
-        },});
+          },
+        });
+        if (!response.ok) {
+          throw new Error('Token invalid');
+        }
         const data = await response.json();
-        console.log(data)
+        console.log(data);
         setUser(data);
       } catch (error) {
         console.error('Error fetching user details:', error);
+        localStorage.removeItem('token');
+        navigate('/login', { replace: true });
       }
     };
-
+  
     fetchUserDetails();
-  }, []);
+  }, [navigate]);
 
-  const handleSignOut = () => {
-    localStorage.removeItem('token');
-    navigate('/login');
+  const handleSignOut = async () => {
+    try {
+      const token = localStorage.getItem('token');
+      if (!token) {
+        console.error('No token found');
+        return;
+      }
+      await axios.post('http://127.0.0.1:8000/api/logout/', {}, {
+        headers: {
+          'Authorization': `Token ${token}`,
+        },
+      });
+
+      localStorage.removeItem('token');
+
+      navigate('/login', { replace: true });
+    } catch (error) {
+      console.error('Error during sign out:', error);
+    }
   };
 
   return (
