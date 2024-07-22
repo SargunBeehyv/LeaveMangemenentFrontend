@@ -14,18 +14,37 @@ const ApplyLeave = () => {
     e.preventDefault();
     const token = localStorage.getItem('token');
     if (!token) {
-        console.error('No token found');
-        return;
+      console.error('No token found');
+      return;
+    }
+
+    const currentDate = new Date();
+    const selectedStartDate = new Date(startDate);
+    const selectedEndDate = new Date(endDate);
+
+    // Check if start date is in the past
+    if (selectedStartDate < currentDate) {
+      navigate("/employee/dashboard");
+      return;
+    }
+
+    // Check if end date is before start date
+    if (selectedEndDate < selectedStartDate) {
+      navigate("/employee/dashboard");
+      return;
     }
 
     const data = { leaveType, startDate, endDate, reason };
-    await axios.post('http://localhost:8000/api/apply-leave/', data,{
-      headers: {
-        'Authorization': `Token ${token}`,
-    },
-    });
-    // Reset form or show success message
-    navigate("/employee/dashboardoard")
+    try {
+      await axios.post('http://localhost:8000/api/apply-leave/', data, {
+        headers: {
+          'Authorization': `Token ${token}`,
+        },
+      });
+      navigate("/employee/dashboard");
+    } catch (error) {
+      console.error('Error applying for leave:', error);
+    }
   };
 
   return (
