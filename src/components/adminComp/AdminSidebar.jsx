@@ -24,10 +24,8 @@ const AdminSidebar = ({ onSignOut }) => {
         throw new Error('Logout failed');
       }
 
-      // Remove the token from localStorage
+ 
       localStorage.removeItem('token');
-
-      // Navigate to login page and replace the current entry in the history stack
       navigate('/login', { replace: true });
     } catch (error) {
       console.error('Error during sign out:', error);
