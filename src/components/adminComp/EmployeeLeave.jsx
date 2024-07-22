@@ -51,9 +51,11 @@ const EmployeeLeave = () => {
         },
         withCredentials: true,
       });
-      setLeaveRequests(leaveRequests.map(request =>
-        request.id === id ? { ...request, status: 1 } : request
-      ));
+      setLeaveRequests(prevRequests => 
+        prevRequests.map(request =>
+          request.id === id ? { ...request, status: 1 } : request
+        ).sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
+      );
     } catch (error) {
       console.error('Error approving leave request:', error);
     }
@@ -73,9 +75,11 @@ const EmployeeLeave = () => {
         },
         withCredentials: true,
       });
-      setLeaveRequests(leaveRequests.map(request =>
-        request.id === id ? { ...request, status: 2 } : request
-      ));
+      setLeaveRequests(prevRequests => 
+        prevRequests.map(request =>
+          request.id === id ? { ...request, status: 2 } : request
+        ).sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
+      );
     } catch (error) {
       console.error('Error rejecting leave request:', error);
     }

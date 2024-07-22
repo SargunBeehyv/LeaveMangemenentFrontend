@@ -22,13 +22,11 @@ const ApplyLeave = () => {
     const selectedStartDate = new Date(startDate);
     const selectedEndDate = new Date(endDate);
 
-    // Check if start date is in the past
     if (selectedStartDate < currentDate) {
       navigate("/employee/dashboard");
       return;
     }
 
-    // Check if end date is before start date
     if (selectedEndDate < selectedStartDate) {
       navigate("/employee/dashboard");
       return;
