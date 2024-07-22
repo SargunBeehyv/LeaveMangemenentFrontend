@@ -28,6 +28,7 @@ const EmployeeLeave = () => {
           },
           withCredentials: true,
         });
+        // The response is already sorted by the server, so we can use it directly
         setLeaveRequests(response.data);
       } catch (error) {
         console.error('Error fetching leave requests:', error);
@@ -36,6 +37,15 @@ const EmployeeLeave = () => {
 
     fetchLeaveRequests();
   }, []);
+
+  const sortLeaveRequests = (requests) => {
+    return requests.sort((a, b) => {
+      if (a.status === 0 && b.status !== 0) return -1;
+      if (a.status !== 0 && b.status === 0) return 1;
+
+      return new Date(b.created_at) - new Date(a.created_at);
+    });
+  };
 
   const handleApprove = async (id) => {
     try {
@@ -52,9 +62,11 @@ const EmployeeLeave = () => {
         withCredentials: true,
       });
       setLeaveRequests(prevRequests => 
-        prevRequests.map(request =>
-          request.id === id ? { ...request, status: 1 } : request
-        ).sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
+        sortLeaveRequests(
+          prevRequests.map(request =>
+            request.id === id ? { ...request, status: 1 } : request
+          )
+        )
       );
     } catch (error) {
       console.error('Error approving leave request:', error);
@@ -76,9 +88,11 @@ const EmployeeLeave = () => {
         withCredentials: true,
       });
       setLeaveRequests(prevRequests => 
-        prevRequests.map(request =>
-          request.id === id ? { ...request, status: 2 } : request
-        ).sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
+        sortLeaveRequests(
+          prevRequests.map(request =>
+            request.id === id ? { ...request, status: 2 } : request
+          )
+        )
       );
     } catch (error) {
       console.error('Error rejecting leave request:', error);
