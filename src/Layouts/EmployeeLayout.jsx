@@ -1,4 +1,4 @@
-// EmployeeLayout.js
+
 import  { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Routes, Route, Navigate, useNavigate, Link } from 'react-router-dom';

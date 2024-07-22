@@ -30,8 +30,7 @@ const Dashboard = () => {
             'Authorization': `Token ${token}`,
           },
         });
-        // Map through the data and format dates and capitalize leave type
-        const formattedData = result.data.map(leave => ({
+                const formattedData = result.data.map(leave => ({
           ...leave,
           leave_type: capitalizeFirstLetter(leave.leave_type),
           from_date: formatDate(leave.from_date),
