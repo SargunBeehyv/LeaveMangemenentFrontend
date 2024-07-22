@@ -15,7 +15,16 @@ const ManageEmployee = () => {
   useEffect(() => {
     const fetchEmployees = async () => {
       try {
-        const response = await axios.get('http://localhost:8000/api/employees/');
+        const token = localStorage.getItem('token');
+        if (!token) {
+            console.error('No token found');
+            return;
+        }
+        const response = await axios.get('http://localhost:8000/api/employees/',{
+          headers: {
+              'Authorization': `Token ${token}`,
+          }
+      });
         setEmployees(response.data);
       } catch (error) {
         console.error('Error fetching employee data:', error);
@@ -28,7 +37,16 @@ const ManageEmployee = () => {
 
   const handleDelete = async (employeeId) => {
     try {
-      await axios.delete(`http://localhost:8000/api/employees/${employeeId}/`);
+      const token = localStorage.getItem('token');
+      if (!token) {
+        console.error('No token found');
+        return;
+    }
+      await axios.delete(`http://localhost:8000/api/employees/${employeeId}/`,{
+        headers: {
+            'Authorization': `Token ${token}`,
+        }
+    });
       setEmployees(employees.filter(employee => employee.id !== employeeId));
     } catch (error) {
       console.error('Error deleting employee:', error);
